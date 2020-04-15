@@ -19,7 +19,10 @@ exports.handler = function(event, context, callback) {
   const send = body => {
     callback(null, {
       statusCode: 200,
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
+      headers: {
+        'content-type': 'application/json',
+      }
     });
   }
 
