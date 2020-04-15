@@ -7,14 +7,19 @@ function App() {
   const [deck, setDeck] = useState([]);
   console.log("REACT STATE DECK: ", deck)
 
-  useEffect(() => {  
-    let myDeck = []
+  const getCards = async () => {
+    const url = `/.netlify/functions/airtable-list/airtable-list`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        console.log(err);
+    }
+  }
 
-    const myFunction = async () =>
-    await (await fetch('/.netlify/functions/my-function/my-function.js')).json();
-
-    console.log(myFunction);
-
+  useEffect(() => {   
+    getCards().then((result) => setDeck(result))
   }, [])
 
   return (
@@ -33,7 +38,7 @@ function App() {
           Learn React
         </a>
         <div>blah blah blah</div>
-        {deck.map((card) => <div>{JSON.stringify(card.fields)}</div>)}
+        {deck.map((card) => <div key={card.id}>{JSON.stringify(card.fields)}</div>)}
       </header>
     </div>
   );
