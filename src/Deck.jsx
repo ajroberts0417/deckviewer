@@ -1,4 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
+
+import DeckModal from './Modal';
 
 import './Game.css';
 
@@ -17,17 +19,5 @@ const Deck = ({cards}) => {
       </>
   );
 }
-
-const DeckModal = ({ handleClose, show, children }) => {
-
-  return (
-    <div className={show ? "modal display-block" : "modal display-none"}>
-      <section className="modal-main">
-        {children}
-        <button onClick={handleClose}>close</button>
-      </section>
-    </div>
-  );
-};
 
 export default Deck;
