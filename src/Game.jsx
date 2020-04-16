@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import Deck from './Deck';
+import Card from './Card';
 
 
 const getCards = async () => {
@@ -14,6 +15,16 @@ const getCards = async () => {
   }
 }
 
+const Location = {
+  DECK: 'deck',
+  HAND: 'hand',
+  DISCARD: 'discard',
+  EXILE: 'exile',
+  BATTLEFIELD: 'battlefield',
+}
+Object.freeze(Location)
+
+
 const Game = () => {
 
   const initialGameState = {
@@ -22,17 +33,63 @@ const Game = () => {
     discardPile: [],  // array of cards
     exile: [],  // array of cards
     battlefield: [],  // array of cards
+    cards: {},
   };
 
   const [gameState, setGameState] = useState(initialGameState);
 
   // set the initial game state -- where the deck has all the cards
-  useEffect(() => getCards().then((cards) => setGameState({deck: cards})), [])
+  useEffect(() => getCards().then((cards) => {
+    let cardsTable = {};
+
+    for (const card in cards) {
+      cardsTable[card.id] = {...card, location: Location.DECK}  // create a dictionary of cards
+    }
+
+    setGameState({deck: cards, cards: cardsTable})  // initialize
+  }), [])
+
+  const setCardLocation = (cardId, nextLocation) => {
+    // get the card from cards
+    const card = gameState.cards[cardId];
+
+    // create a new array for the removal from prior location
+    let oldArrayCopy = [...gameState[card.location]]
+    // splice the removed card at the correct index
+    oldArrayCopy.splice(oldArrayCopy.indexOf(card.id), 1);
+
+    // create a new array for the addition to a new location
+    const newArrayCopy = [...gameState[nextLocation], card.id];
+
+    // update the state of cards, prevLocation, nextLocation
+    setGameState(
+      {
+        [card.location]: oldArrayCopy,
+        [nextLocation]: newArrayCopy,
+        cards: {...gameState.cards, [cardId]: {...gameState.cards.cardId, 'location': nextLocation}},
+      },
+    )
+  }
 
   return (
       <>
         <p className="label">Deck:</p>
-        <Deck cards={gameState.deck}/>
+        <Deck setCardLocation={setCardLocation} cards={gameState.deck}/>
+        <p className="label">Hand:</p>
+        <div>
+          <Card className="hand">
+            <p>Hello Card</p>
+          </Card>
+          <Card className="hand">
+            <p>Hello Card</p>
+          </Card >
+          <Card className="hand">
+            <p>Hello Card</p>
+          </Card>
+          <Card className="hand">
+            <p>Hello Card</p>
+          </Card>
+        </div>
       </>
   );
 }
