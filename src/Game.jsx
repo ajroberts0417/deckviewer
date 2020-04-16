@@ -77,18 +77,10 @@ const Game = () => {
         <Deck setCardLocation={setCardLocation} cards={gameState.deck}/>
         <p className="label">Hand:</p>
         <div>
-          <Card className="hand">
-            <p>Hello Card</p>
-          </Card>
-          <Card className="hand">
-            <p>Hello Card</p>
-          </Card >
-          <Card className="hand">
-            <p>Hello Card</p>
-          </Card>
-          <Card className="hand">
-            <p>Hello Card</p>
-          </Card>
+          <Card cardInfo={gameState.deck[0]?.fields}className="hand" />
+          <Card cardInfo={gameState.deck[1]?.fields} className="hand" />
+          <Card cardInfo={gameState.deck[1]?.fields} className="hand" />
+          <Card cardInfo={gameState.deck[1]?.fields} className="hand" />
         </div>
       </>
   );
