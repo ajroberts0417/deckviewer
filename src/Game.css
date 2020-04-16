@@ -23,11 +23,20 @@
 a.card {
     text-decoration: none;
 }
+
 /* selected and hover state */
 .card:hover, card:active, card:focus,
 strong .card {
-    box-shadow: 0px 0px 1em 0.1em lightskyblue;
-    bottom: 0.3em;
+    box-shadow: 0px 0px 0.7em 0.1em lightskyblue;
+}
+
+/* selected and hover state */
+.card.hand:hover, card:active, card:focus,
+strong .card.hand {
+    box-shadow: 0px 0px 0.4em 0em rgb(255, 239, 92);
+    bottom: 3.9em;
+    transform: scale(2.5);
+    z-index: 50;
 }
 
 .card.back {
