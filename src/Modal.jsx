@@ -1,15 +1,15 @@
 import React from 'react';
 
+import { Modal } from '@material-ui/core';
+
 
 const DeckModal = ({ handleClose, show, children }) => {
 
   return (
-    <div className={show ? "modal display-block" : "modal display-none"}>
-      <section className="modal-main">
-        {children}
-        <button onClick={handleClose}>close</button>
-      </section>
-    </div>
+    <Modal open={show}>
+      {children}
+      <button onClick={handleClose}>close</button>
+    </Modal>
   );
 };
 
