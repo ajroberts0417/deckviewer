@@ -4,7 +4,7 @@ import { Dialog } from '@material-ui/core';
 
 import './Game.css';
 
-const Deck = ({cards}) => {
+const Deck = ({cards, setCardLocation}) => {
 
   const [showDeck, setShowDeck] = useState(false);
 
