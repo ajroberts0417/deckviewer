@@ -1,12 +1,28 @@
 import React from 'react';
 
 import MuiCard from '@material-ui/core/Card';
-import {Typography, CardContent, CardHeader} from '@material-ui/core';
+import {Typography, CardContent, CardActions, Button} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
 
 import './Game.css';
 
-const Card = ({cardInfo, className, setCardLocation, children}) => {
+const useStyles = makeStyles({
+  root: {
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    borderRadius: 3,
+    border: 0,
+    color: 'white',
+    height: '10%',
+    padding: '0 4px',
+    margin: '0px',
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+  },
+  label: {
+    textTransform: 'capitalize',
+  },
+});
 
+const Card = ({cardInfo, className, setCardLocation, children}) => {
 
 let name = null;
 let cost = null;
@@ -24,8 +40,8 @@ if (cardInfo) {
   attackType = cardInfo["attack type"];
 }
 
-  
- // {"id":28,"Name":"Major Magic Missile","cost":3,"rules text":"**Fire 10 missiles divided among up to 10 targets that each deal 1d4 damage**\n","designer":[{"id":"usrZA1KiFv3uSGzoK","email":"ajroberts0417@gmail.com","name":"Andrew Roberts"}],"class":"Wizard","Deck":["recKpeklbKQmcL7pM"],"range":"120 Feet","attack type":"spell"}
+const classes = useStyles();
+
 
   // setCardLocation(cardInfo.id, 'deck');
   return (
@@ -41,6 +57,17 @@ if (cardInfo) {
         <Typography variant="body2">
           {rulesText}
         </Typography>
+        <CardActions disableSpacing>
+          <Button size="small" color="primary" classes={{root: classes.root, label: classes.label}}>
+            Draw
+          </Button>
+          <Button classes={{root: classes.root, label: classes.label}} size="small" color="primary">
+            Play
+          </Button>
+        </CardActions>
+          <Button classes={{root: classes.root, label: classes.label}} size="small" color="primary">
+            Discard
+          </Button>
         {children}
       </MuiCard>
   );
