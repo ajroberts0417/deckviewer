@@ -51,7 +51,7 @@ strong .card {
 .card.hand:hover, .card.battlefield:hover, card:active, card:focus,
 strong .card.hand{
     box-shadow: 0px 0px 0.4em 0em rgb(255, 239, 92);
-    bottom: 1em;
+    bottom: 1.6em;
     font-size: 2em;
     transform: scale(1.5);
     z-index: 50;
@@ -72,8 +72,8 @@ strong .card.hand{
 
 .battlefield-container {
     position: absolute;
-    top: 20%;
-    left: 10vw;
+    top: 15%;
+    left: 5vw;
 }
 
 .deck-container {
