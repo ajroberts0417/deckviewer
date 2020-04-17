@@ -3,19 +3,7 @@ import React, {useEffect, useState} from 'react';
 import Deck from './Deck';
 import Card from './Card';
 
-
-const getCards = async () => {
-  const url = `/.netlify/functions/airtable-list/airtable-list`;
-  try {
-      const response = await fetch(url);
-      const data = await response.json();
-      return data;
-  } catch (err) {
-      console.log(err);
-  }
-}
-
-const Location = {
+export const Location = {
   DECK: 'deck',
   HAND: 'hand',
   DISCARD: 'discard',
@@ -30,7 +18,7 @@ const Game = () => {
   const initialGameState = {
     hand: [],  // array of cards
     deck: [],  // array of cards
-    discardPile: [],  // array of cards
+    discard: [],  // array of cards
     exile: [],  // array of cards
     battlefield: [],  // array of cards
     cards: {},
@@ -38,20 +26,42 @@ const Game = () => {
 
   const [gameState, setGameState] = useState(initialGameState);
 
-  // set the initial game state -- where the deck has all the cards
-  useEffect(() => getCards().then((cards) => {
-    let cardsTable = {};
+  console.log(gameState)
 
-    for (const card in cards) {
-      cardsTable[card.id] = {...card, location: Location.DECK}  // create a dictionary of cards
+  // set the initial game state -- where the deck has all the cards
+  useEffect(() => {
+    const getCards = async () => {
+      const url = `/.netlify/functions/airtable-list/airtable-list`;
+      try {
+          const response = await fetch(url);
+          const data = await response.json();
+          return data;
+      } catch (err) {
+          console.log(err);
+      }
     }
 
-    setGameState({deck: cards, cards: cardsTable})  // initialize
-  }), [])
+    getCards().then((cards) => {
+      let cardsTable = {};
+
+      cards.forEach((card) => {
+        console.log(card)
+        cardsTable[card.fields.id] = {...card.fields, location: Location.DECK}  // create a dictionary of cards
+      })
+
+      setGameState({...gameState, deck: cards, cards: cardsTable})  // initialize
+    })
+  }, [])
 
   const setCardLocation = (cardId, nextLocation) => {
     // get the card from cards
+
+    console.log("Calling with: ", cardId, " ", nextLocation);
+
+    console.log(gameState.cards)
     const card = gameState.cards[cardId];
+
+    console.log(card)
 
     // create a new array for the removal from prior location
     let oldArrayCopy = [...gameState[card.location]]
@@ -59,14 +69,18 @@ const Game = () => {
     oldArrayCopy.splice(oldArrayCopy.indexOf(card.id), 1);
 
     // create a new array for the addition to a new location
-    const newArrayCopy = [...gameState[nextLocation], card.id];
+    console.log("gameState[nextLocation]: ", gameState[nextLocation], "for location:", nextLocation)
+    const newArrayCopy = card.location === nextLocation ? [...oldArrayCopy, card.id] : [...gameState[nextLocation], card.id];
 
+    console.log(oldArrayCopy)
+    console.log(newArrayCopy)
     // update the state of cards, prevLocation, nextLocation
     setGameState(
       {
+        ...gameState,
         [card.location]: oldArrayCopy,
         [nextLocation]: newArrayCopy,
-        cards: {...gameState.cards, [cardId]: {...gameState.cards.cardId, 'location': nextLocation}},
+        cards: {...gameState.cards, [cardId]: {...gameState.cards[cardId], 'location': nextLocation}},
       },
     )
   }
@@ -77,10 +91,10 @@ const Game = () => {
         <Deck setCardLocation={setCardLocation} cards={gameState.deck}/>
         <p className="label">Hand:</p>
         <div>
-          <Card cardInfo={gameState.deck[0]?.fields}className="hand" />
-          <Card cardInfo={gameState.deck[1]?.fields} className="hand" />
-          <Card cardInfo={gameState.deck[1]?.fields} className="hand" />
-          <Card cardInfo={gameState.deck[1]?.fields} className="hand" />
+          <Card setCardLocation={setCardLocation} cardInfo={gameState.deck[0]?.fields} className="hand" />
+          <Card setCardLocation={setCardLocation} cardInfo={gameState.deck[1]?.fields} className="hand" />
+          <Card setCardLocation={setCardLocation} cardInfo={gameState.deck[2]?.fields} className="hand" />
+          <Card setCardLocation={setCardLocation} cardInfo={gameState.deck[3]?.fields} className="hand" />
         </div>
       </>
   );

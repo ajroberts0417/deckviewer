@@ -1,5 +1,7 @@
 import React from 'react';
 
+import {Location} from './Game';
+
 import MuiCard from '@material-ui/core/Card';
 import {Typography, CardContent, CardActions, Button} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
@@ -24,6 +26,7 @@ const useStyles = makeStyles({
 
 const Card = ({cardInfo, className, setCardLocation, children}) => {
 
+let id = null;
 let name = null;
 let cost = null;
 let rulesText = null;
@@ -32,6 +35,7 @@ let range = null;
 let attackType = null;
 
 if (cardInfo) {
+  id = cardInfo["id"];
   name = cardInfo["Name"];
   cost = cardInfo["cost"];
   rulesText = cardInfo["rules text"];
@@ -58,13 +62,13 @@ const classes = useStyles();
           {rulesText}
         </Typography>
         <CardActions className="card-button-area"disableSpacing>
-          <Button size="small" color="primary" classes={{root: classes.root, label: classes.label}}>
+          <Button size="small" color="primary" classes={{root: classes.root, label: classes.label}} onClick={() => setCardLocation(id, Location.HAND)}>
             Draw
           </Button>
-          <Button classes={{root: classes.root, label: classes.label}} size="small" color="primary">
+          <Button classes={{root: classes.root, label: classes.label}} size="small" color="primary" onClick={() => setCardLocation(id, Location.BATTLEFIELD)}>
             Play
           </Button>
-          <Button classes={{root: classes.root, label: classes.label}} size="small" color="primary">
+          <Button classes={{root: classes.root, label: classes.label}} size="small" color="primary" onClick={() => setCardLocation(id, Location.DISCARD)}>
             Discard
           </Button>
         </CardActions>
