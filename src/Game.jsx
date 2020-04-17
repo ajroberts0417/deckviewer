@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { Dialog, DialogContent } from '@material-ui/core';
 
 import Deck from './Deck';
 import Card from './Card';
@@ -11,6 +12,13 @@ export const Location = {
   BATTLEFIELD: 'battlefield',
 }
 Object.freeze(Location)
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
 
 
 const Game = () => {
@@ -25,8 +33,8 @@ const Game = () => {
   };
 
   const [gameState, setGameState] = useState(initialGameState);
-
-  console.log(gameState)
+  const [showDeck, setShowDeck] = useState(false);
+  const [showDiscard, setShowDiscard] = useState(false);
 
   // set the initial game state -- where the deck has all the cards
   useEffect(() => {
@@ -43,25 +51,22 @@ const Game = () => {
 
     getCards().then((cards) => {
       let cardsTable = {};
+      let initialDeck = [];
 
       cards.forEach((card) => {
-        console.log(card)
         cardsTable[card.fields.id] = {...card.fields, location: Location.DECK}  // create a dictionary of cards
-      })
+        initialDeck.push(card.fields.id)
+      }) 
 
-      setGameState({...gameState, deck: cards, cards: cardsTable})  // initialize
+      shuffle(initialDeck)
+
+      setGameState({...gameState, deck: initialDeck, cards: cardsTable})  // initialize
     })
   }, [])
 
   const setCardLocation = (cardId, nextLocation) => {
     // get the card from cards
-
-    console.log("Calling with: ", cardId, " ", nextLocation);
-
-    console.log(gameState.cards)
     const card = gameState.cards[cardId];
-
-    console.log(card)
 
     // create a new array for the removal from prior location
     let oldArrayCopy = [...gameState[card.location]]
@@ -69,11 +74,8 @@ const Game = () => {
     oldArrayCopy.splice(oldArrayCopy.indexOf(card.id), 1);
 
     // create a new array for the addition to a new location
-    console.log("gameState[nextLocation]: ", gameState[nextLocation], "for location:", nextLocation)
     const newArrayCopy = card.location === nextLocation ? [...oldArrayCopy, card.id] : [...gameState[nextLocation], card.id];
 
-    console.log(oldArrayCopy)
-    console.log(newArrayCopy)
     // update the state of cards, prevLocation, nextLocation
     setGameState(
       {
@@ -85,16 +87,40 @@ const Game = () => {
     )
   }
 
+  const mapCardsByLocation = (location) => {
+    return gameState[location].map((cardId) =>
+      <Card key={cardId} setCardLocation={setCardLocation} cardInfo={gameState.cards[cardId]} className={location}/>
+    )
+  }
+
   return (
       <>
-        <p className="label">Deck:</p>
-        <Deck setCardLocation={setCardLocation} cards={gameState.deck}/>
-        <p className="label">Hand:</p>
-        <div>
-          <Card setCardLocation={setCardLocation} cardInfo={gameState.deck[0]?.fields} className="hand" />
-          <Card setCardLocation={setCardLocation} cardInfo={gameState.deck[1]?.fields} className="hand" />
-          <Card setCardLocation={setCardLocation} cardInfo={gameState.deck[2]?.fields} className="hand" />
-          <Card setCardLocation={setCardLocation} cardInfo={gameState.deck[3]?.fields} className="hand" />
+        <div className="battlefield-container">
+          {mapCardsByLocation(Location.BATTLEFIELD)}
+        </div>
+        <div className="discard-container">
+          <p className="label">Discard:</p>
+          <div href="#" className="card back deck" onClick={() => setShowDiscard(true)}>
+            {gameState.discard.length}
+          </div>
+          <Dialog open={showDiscard} onClose={() => setShowDiscard(false)} scroll="paper" maxWidth="lg" className="dialog-content" aria-labelledby="modal-title" aria-describedby="modal-description">
+            <DialogContent>
+              {mapCardsByLocation(Location.DISCARD)}
+            </DialogContent>
+          </Dialog>
+        </div>
+        <div className="deck-container">
+          <p className="label">Deck:</p>
+          <Deck setCardLocation={setCardLocation} cards={gameState.deck} onClick={() => setShowDeck(true)}/>
+          <Dialog open={showDeck} onClose={() => setShowDeck(false)} scroll="paper" maxWidth="lg" className="dialog-content" aria-labelledby="modal-title" aria-describedby="modal-description">
+            <DialogContent>
+              {mapCardsByLocation(Location.DECK)}
+            </DialogContent>
+          </Dialog>
+        </div>  
+        <p className="hand-container-label">Hand:</p>
+        <div className="hand-container">
+          {mapCardsByLocation(Location.HAND)}
         </div>
       </>
   );

@@ -10,7 +10,7 @@
     padding: .25em;
     margin: 0 .5em .5em 0;
     text-align: center;
-    font-size: 1.4em; /* @change: adjust this value to make bigger or smaller cards */
+    font-size: 1.5em; /* @change: adjust this value to make bigger or smaller cards */
     font-weight: normal;
     font-family: Arial, sans-serif;
     position: relative;
@@ -18,6 +18,12 @@
     -moz-box-shadow: .2em .2em .5em #333;
     -webkit-box-shadow: .2em .2em .5em #333;
     box-shadow: .2em .2em .5em #333;
+    overflow: scroll;
+}
+
+.card.dialog {
+    width: 7em;
+    height:  9.8em;
 }
 
 .card-header {
@@ -42,11 +48,12 @@ strong .card {
 }
 
 /* selected and hover state */
-.card.hand:hover, card:active, card:focus,
-strong .card.hand {
+.card.hand:hover, .card.battlefield:hover, card:active, card:focus,
+strong .card.hand{
     box-shadow: 0px 0px 0.4em 0em rgb(255, 239, 92);
-    bottom: 3.9em;
-    transform: scale(2.5);
+    bottom: 1em;
+    font-size: 2em;
+    transform: scale(1.5);
     z-index: 50;
 }
 
@@ -61,4 +68,43 @@ strong .card.hand {
 
 .deck {
     cursor:pointer;
+}
+
+.battlefield-container {
+    position: absolute;
+    top: 20%;
+    left: 10vw;
+}
+
+.deck-container {
+    position: absolute;
+    bottom: 1vh;
+    right: 1vw;
+}
+
+.discard-container {
+    position: absolute;
+    bottom: 50vh;
+    right: 1vw;
+}
+
+.hand-container {
+    background-color: tan;
+    position: absolute;
+    bottom: 1vh;
+    left: 2vw;
+    border-radius: 10px;
+    padding: 0.5em 0em 0em 0.5em;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    align-content: center;
+    width: 70vw;
+    min-height: 32vh;
+}
+
+.hand-container-label {
+    position: absolute;
+    bottom: 35vh;
+    left: 2vw;
 }
