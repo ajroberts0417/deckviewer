@@ -26,10 +26,9 @@
     justify-content: space-between;
 }
 
-.cardbutton{
-    padding: 0px;
-    color: green;
-    background-color: magenta;
+.card-button-area {
+    display: flex;
+    flex-direction: column;
 }
 
 a.card {
