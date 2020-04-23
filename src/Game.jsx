@@ -34,7 +34,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Game = () => {
+const Game = ({deck}) => {
 
   const classes = useStyles();
 
@@ -54,10 +54,11 @@ const Game = () => {
   // set the initial game state -- where the deck has all the cards
   useEffect(() => {
     const getCards = async () => {
-      const url = `/.netlify/functions/airtable-list/airtable-list`;
+      const url = `/.netlify/functions/airtable-list/airtable-list?deck=${deck}`;
       try {
           const response = await fetch(url);
           const data = await response.json();
+          console.log(data);
           return data;
       } catch (err) {
           console.log(err);
@@ -138,7 +139,7 @@ const Game = () => {
           <Deck setCardLocation={setCardLocation} cards={gameState.deck} onClick={() => setShowDeck(true)}/>
           <Button classes={{root: classes.button}} size="small" color="primary" onClick={() => setCardLocation(gameState.deck[0], Location.HAND)}>
               Draw
-            </Button>
+          </Button>
           <Dialog open={showDeck} onClose={() => setShowDeck(false)} scroll="paper" maxWidth="lg" className="dialog-content" aria-labelledby="modal-title" aria-describedby="modal-description">
             <DialogContent>
               {mapCardsByLocation(Location.DECK, "dialog", true)}

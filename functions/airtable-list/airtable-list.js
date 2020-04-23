@@ -15,6 +15,8 @@ var base = Airtable.base(AIRTABLE_BASE_ID);
 /** THIS IS YOUR SERVERLESS FUNCTION */
 exports.handler = function(event, context, callback) {
 
+  const queryParams = event.queryStringParameters
+
   // THIS FUNCTION FORMATS AND SENDS YOUR RESPONSE BACK TO YOUR FRONT-END
   const send = body => {
     callback(null, {
@@ -27,10 +29,11 @@ exports.handler = function(event, context, callback) {
   }
 
   const allRecords = []
-  base('Card')
+  base('DeckCard')
     .select({
       maxRecords: 100,
-      view: 'Grid view'
+      view: 'Edit View',
+      filterByFormula: `{Deck}='${queryParams.deck}'`
     })
     .eachPage(
       function page(records, fetchNextPage) {

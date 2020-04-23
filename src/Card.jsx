@@ -36,12 +36,12 @@ let attackType = null;
 
 if (cardInfo) {
   id = cardInfo["id"];
-  name = cardInfo["Name"];
-  cost = cardInfo["cost"];
-  rulesText = cardInfo["rules text"];
-  classType = cardInfo["class"];
-  range = cardInfo["range"];
-  attackType = cardInfo["attack type"];
+  name = cardInfo["cardName"];
+  cost = cardInfo["cardCost"];
+  rulesText = cardInfo["rulesText"];
+  classType = cardInfo["cardClass"];
+  range = cardInfo["cardRange"];
+  attackType = cardInfo["cardType"];
 }
 
 const classes = useStyles();
