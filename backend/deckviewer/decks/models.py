@@ -23,6 +23,11 @@ class Player(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
 
 
+class PlayerCard(models.Model):
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    card = models.ForeignKey(Card, on_delete=models.CASCADE)
+
+
 class Deck(models.Model):
     name = models.CharField(max_length=100)
     player = models.ForeignKey(Player, on_delete=models.CASCADE, blank=True, null=True)
