@@ -12,6 +12,7 @@ black = "*"
 django = "*"
 graphene-django = "*"
 black = "*"
+airtable-python-wrapper = "*"
 
 [requires]
 python_version = "3.7"

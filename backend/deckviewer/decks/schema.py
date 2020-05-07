@@ -1,13 +1,25 @@
 import graphene
 
 from graphene_django.types import DjangoObjectType
+from airtable import Airtable
+from typing import List
 
 from deckviewer.decks.models import Deck, Card, DeckCard
+
+airtable = Airtable('appr7aUJe07RDR9Ho', 'DeckCard')  # for DeckCard table
 
 
 class CardType(DjangoObjectType):
     class Meta:
         model = Card
+
+    airtable_id = graphene.String()
+    name = graphene.String()
+    cost = graphene.Int()
+    rules_text = graphene.String()
+    class_type = graphene.String()
+    range = graphene.String()
+    attack_type = graphene.String()
 
 
 class DeckCardType(DjangoObjectType):
@@ -22,8 +34,25 @@ class DeckType(DjangoObjectType):
     cards = graphene.List(CardType)
 
     def resolve_cards(parent: Deck, info, **kwargs):
-        deckcards = DeckCard.objects.select_related("card").filter(deck=parent)
-        cards = [deckcard.card for deckcard in deckcards]
+        # deckcards = DeckCard.objects.select_related("card").filter(deck=parent)
+        # cards = [deckcard.card for deckcard in deckcards]
+        deckcards = airtable.get_all(
+            view='Edit View',
+            formula="Deck='{}'".format(parent.id)
+        )
+
+        cards: List[DeckCardType] = []
+        for card in deckcards:
+            card_type = CardType()
+            card_type.airtable_id = card.get("id")
+            card_type.name = card["fields"].get("cardName")[0]
+            card_type.cost = card["fields"].get("cardCost")[0]
+            card_type.rulesText = card["fields"].get("rulesText")[0]
+            card_type.classType = card["fields"].get("cardClass")[0]
+            card_type.range = card["fields"].get("cardRange")[0]
+            # card_type.attackType = card["fields"].get("cardType")[0]
+            cards.append(card_type)
+
         return cards
 
 
@@ -39,7 +68,7 @@ class Query(object):
 
     @staticmethod
     def resolve_default_decks(parent: None, info, **kwargs):
-        return Deck.objects.filter(player__isnull=True)
+        return [DeckType(id=x) for x in range(1, 5)]  # ids for the respective decks
 
     @staticmethod
     def resolve_all_cards(parent: None, info, **kwargs):
@@ -47,9 +76,24 @@ class Query(object):
 
     @staticmethod
     def resolve_all_deckcards(parent: None, info, **kwargs):
-        deckcards = DeckCard.objects.select_related("deck").select_related("card").all()
+        # deckcards = DeckCard.objects.select_related("deck").select_related("card").all()
+        deckcards = airtable.get_all(view='Edit View')
 
-        return deckcards
+        deck_cards: List[DeckCardType] = []
+        for card in deckcards:
+            card_type = CardType()
+            card_type.airtable_id = card.get("id")
+            card_type.name = card["fields"].get("cardName")[0]
+            card_type.cost = card["fields"].get("cardCost")[0]
+            card_type.rulesText = card["fields"].get("rulesText")[0]
+            card_type.classType = card["fields"].get("cardClass")[0]
+            card_type.range = card["fields"].get("cardRange")[0]
+            # card_type.attackType = card["fields"].get("cardType")[0]
+            deck = DeckType(name=card["fields"].get("deckName")[0])
+            deck_card = DeckCardType(deck=deck, card=card_type)
+            deck_cards.append(deck_card)
+
+        return deck_cards
 
 
 class DeckMutation(graphene.Mutation):
