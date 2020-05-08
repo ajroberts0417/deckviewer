@@ -29,8 +29,8 @@ const useStyles = makeStyles({
 const decks = {
   FIGHTER: 1,
   WIZARD: 2,
-  RANGER: 3,
-  CLERIC: 4,
+  CLERIC: 3,
+  RANGER: 4,
 }
 
 function App() {
