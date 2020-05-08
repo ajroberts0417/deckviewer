@@ -21,6 +21,8 @@ const useStyles = makeStyles({
 const decks = {
   FIGHTER: 1,
   WIZARD: 2,
+  RANGER: 3,
+  CLERIC: 4,
 }
 
 function App() {
@@ -36,6 +38,12 @@ function App() {
         </Button>
         <Button classes={{root: classes.button}} size="small" color="primary" onClick={() => setDeck(decks.WIZARD)}>
           Wizard
+        </Button>
+        <Button classes={{root: classes.button}} size="small" color="primary" onClick={() => setDeck(decks.RANGER)}>
+          Ranger
+        </Button>
+        <Button classes={{root: classes.button}} size="small" color="primary" onClick={() => setDeck(decks.CLERIC)}>
+          Cleric
         </Button>
       </div>
     </div>

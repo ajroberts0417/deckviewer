@@ -71,6 +71,9 @@ const classes = useStyles();
           <Button classes={{root: classes.root, label: classes.label}} size="small" color="primary" onClick={() => setCardLocation(id, Location.DISCARD)}>
             Discard
           </Button>
+          <Button classes={{root: classes.root, label: classes.label}} size="small" color="primary" onClick={() => setCardLocation(id, Location.EXILE)}>
+            Exile
+          </Button>
         </CardActions>
         {children}
       </MuiCard>
