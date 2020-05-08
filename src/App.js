@@ -1,9 +1,17 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles';
-
+import { makeStyles } from '@material-ui/core/styles';
+import { ApolloProvider, ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import Game from './Game';
+import ApolloTest from './ApolloTest';
 import './App.css';
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({
+    uri: 'https://48p1r2roz4.sse.codesandbox.io',
+  })
+});
 
 const useStyles = makeStyles({
   button: {
@@ -29,24 +37,27 @@ function App() {
   const classes = useStyles();
   const [deck, setDeck] = useState(null);
 
-  if (deck) return <div className="App"><Game deck={deck}/></div>;
+  if (deck) return <ApolloProvider client={client}><div className="App"><Game deck={deck} /></div></ApolloProvider>;
   else return (
-    <div className="App">
-      <div className="deck-choice">
-        <Button classes={{root: classes.button}} size="small" color="primary" onClick={() => setDeck(decks.FIGHTER)}>
-          Fighter
+    <ApolloProvider client={client}>
+      <div className="App">
+        <div className="deck-choice">
+          <ApolloTest />
+          <Button classes={{ root: classes.button }} size="small" color="primary" onClick={() => setDeck(decks.FIGHTER)}>
+            Fighter
         </Button>
-        <Button classes={{root: classes.button}} size="small" color="primary" onClick={() => setDeck(decks.WIZARD)}>
-          Wizard
+          <Button classes={{ root: classes.button }} size="small" color="primary" onClick={() => setDeck(decks.WIZARD)}>
+            Wizard
         </Button>
-        <Button classes={{root: classes.button}} size="small" color="primary" onClick={() => setDeck(decks.RANGER)}>
-          Ranger
+          <Button classes={{ root: classes.button }} size="small" color="primary" onClick={() => setDeck(decks.RANGER)}>
+            Ranger
         </Button>
-        <Button classes={{root: classes.button}} size="small" color="primary" onClick={() => setDeck(decks.CLERIC)}>
-          Cleric
+          <Button classes={{ root: classes.button }} size="small" color="primary" onClick={() => setDeck(decks.CLERIC)}>
+            Cleric
         </Button>
+        </div>
       </div>
-    </div>
+    </ApolloProvider>
   );
 }
 
