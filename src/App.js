@@ -42,19 +42,18 @@ function App() {
     <ApolloProvider client={client}>
       <div className="App">
         <div className="deck-choice">
-          <ApolloTest />
           <Button classes={{ root: classes.button }} size="small" color="primary" onClick={() => setDeck(decks.FIGHTER)}>
             Fighter
-        </Button>
+          </Button>
           <Button classes={{ root: classes.button }} size="small" color="primary" onClick={() => setDeck(decks.WIZARD)}>
             Wizard
-        </Button>
+          </Button>
           <Button classes={{ root: classes.button }} size="small" color="primary" onClick={() => setDeck(decks.RANGER)}>
             Ranger
-        </Button>
+          </Button>
           <Button classes={{ root: classes.button }} size="small" color="primary" onClick={() => setDeck(decks.CLERIC)}>
             Cleric
-        </Button>
+          </Button>
         </div>
       </div>
     </ApolloProvider>
