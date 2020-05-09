@@ -31,6 +31,7 @@ let cost = null;
 let rulesText = null;
 let classType = null;
 let range = null;
+let cardType = null;
 let attackType = null;
 
 if (cardInfo) {
@@ -40,7 +41,8 @@ if (cardInfo) {
   rulesText = cardInfo["rulesText"];
   classType = cardInfo["cardClass"];
   range = cardInfo["cardRange"];
-  attackType = cardInfo["cardType"];
+  cardType = cardInfo["cardType"];
+  attackType = cardInfo["attackType"];
 }
 
 const classes = useStyles();
@@ -49,15 +51,19 @@ const classes = useStyles();
   // setCardLocation(cardInfo.id, 'deck');
   return (
       <MuiCard className={"card "+className}>
-        <CardContent className="card-header">
-          <Typography variant="body1">
+        <div className="card-header">
+          <Typography variant="subtitle2">
             {name}
           </Typography>
-          <Typography variant="body1">
+          <Typography variant="subtitle2">
             {cost}
           </Typography>
-        </CardContent>
+        </div>
         <Typography variant="body2">
+          <Typography variant="caption" style={{fontStyle: 'italic'}}>
+            Range: {range} -- {cardType}
+          </Typography>
+          <br />
           {rulesText}
           <br />
           <span style={{margin: '0px', padding: '0px', display: 'inline-block'}}>
