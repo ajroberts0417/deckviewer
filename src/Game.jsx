@@ -115,6 +115,17 @@ const Game = ({deck}) => {
     )
   }
 
+  const reshuffleDiscard = () => {
+    // create a new array for all of the cards in the deck
+
+    let newDeck = gameState.deck.concat(gameState.discard)
+    console.log(newDeck)
+
+    shuffle(newDeck);
+
+    setGameState({...gameState, deck: newDeck, discard: []});
+  }
+
   return (
       <>
         <div className="battlefield-container">
@@ -125,6 +136,9 @@ const Game = ({deck}) => {
           <div href="#" className="card back deck" onClick={() => setShowDiscard(true)}>
             {gameState.discard.length}
           </div>
+          <Button classes={{root: classes.button}} size="small" color="secondary" onClick={() => reshuffleDiscard()}>
+              Reshuffle
+          </Button>
           <Dialog open={showDiscard} onClose={() => setShowDiscard(false)} scroll="paper" maxWidth="lg" className="dialog-content" aria-labelledby="modal-title" aria-describedby="modal-description">
             <DialogContent>
               {mapCardsByLocation(Location.DISCARD, "dialog", true)}
