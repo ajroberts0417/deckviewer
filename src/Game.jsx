@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Button, Dialog, DialogContent } from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 import Deck from './Deck';
 import Card from './Card';
@@ -35,9 +36,10 @@ const useStyles = makeStyles({
 });
 
 const Game = ({deck}) => {
+  const history = useHistory();
+  if (!deck) history.push('/');
 
   const classes = useStyles();
-
   const initialGameState = {
     hand: [],  // array of cards
     deck: [],  // array of cards
