@@ -3,10 +3,23 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { ApolloProvider, ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
+import { BrowserRouter } from 'react-router-dom'
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({
+    uri: 'https://48p1r2roz4.sse.codesandbox.io',
+  })
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <ApolloProvider client={client}>
+        <App />
+      </ApolloProvider>;
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
