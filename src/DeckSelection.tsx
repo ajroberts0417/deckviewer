@@ -1,7 +1,7 @@
-import React from 'react';
-import { Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from "react-router-dom";
+import React from 'react'
+import { Button } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles({
   button: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     padding: '0 30px',
     marginRight: '1.5em',
   },
-});
+})
 
 const decks = {
   FIGHTER: 1,
@@ -24,12 +24,12 @@ const decks = {
 }
 
 const DeckSelection = ({setDeck}) => {
-  const classes = useStyles();
-  let history = useHistory();
+  const classes = useStyles()
+  const history = useHistory()
 
   const setDeckAndRoute = (deck) => {
-    setDeck(deck);
-    history.push('/game');
+    setDeck(deck)
+    history.push('/game')
   }
 
   return (
@@ -47,7 +47,7 @@ const DeckSelection = ({setDeck}) => {
         Cleric
       </Button>
     </div>
-  );
+  )
 }
 
-export default DeckSelection;
+export default DeckSelection
