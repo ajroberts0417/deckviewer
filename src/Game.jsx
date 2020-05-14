@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import { Button, Dialog, DialogContent } from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
+import React, {useEffect, useState} from 'react'
+import { Button, Dialog, DialogContent } from '@material-ui/core'
+import {makeStyles} from '@material-ui/core/styles'
+import { useHistory } from 'react-router-dom'
 
-import Deck from './Deck';
-import Card from './Card';
+import Deck from './Deck'
+import Card from './Card'
 
 export const Location = {
   DECK: 'deck',
@@ -17,8 +17,8 @@ Object.freeze(Location)
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]]
   }
 }
 
@@ -33,13 +33,13 @@ const useStyles = makeStyles({
     padding: '0 30px',
     marginRight: '1.5em',
   },
-});
+})
 
 const Game = ({deck}) => {
-  const history = useHistory();
-  if (!deck) history.push('/');
+  const history = useHistory()
+  if (!deck) history.push('/')
 
-  const classes = useStyles();
+  const classes = useStyles()
   const initialGameState = {
     hand: [],  // array of cards
     deck: [],  // array of cards
@@ -47,28 +47,28 @@ const Game = ({deck}) => {
     exile: [],  // array of cards
     battlefield: [],  // array of cards
     cards: {},
-  };
+  }
 
-  const [gameState, setGameState] = useState(initialGameState);
-  const [showDeck, setShowDeck] = useState(false);
-  const [showDiscard, setShowDiscard] = useState(false);
+  const [gameState, setGameState] = useState(initialGameState)
+  const [showDeck, setShowDeck] = useState(false)
+  const [showDiscard, setShowDiscard] = useState(false)
 
   // set the initial game state -- where the deck has all the cards
   useEffect(() => {
     const getCards = async () => {
-      const url = `/.netlify/functions/airtable-list/airtable-list?deck=${deck}`;
+      const url = `/.netlify/functions/airtable-list/airtable-list?deck=${deck}`
       try {
-          const response = await fetch(url);
-          const data = await response.json();
-          return data;
+          const response = await fetch(url)
+          const data = await response.json()
+          return data
       } catch (err) {
-          console.log(err);
+          console.log(err)
       }
     }
 
     getCards().then((cards) => {
-      let cardsTable = {};
-      let initialDeck = [];
+      const cardsTable = {}
+      const initialDeck = []
 
       cards.forEach((card) => {
         cardsTable[card.fields.id] = {...card.fields, location: Location.DECK}  // create a dictionary of cards
@@ -83,17 +83,17 @@ const Game = ({deck}) => {
 
   const setCardLocation = (cardId, nextLocation) => {
     // get the card from cards
-    const card = gameState.cards[cardId];
+    const card = gameState.cards[cardId]
 
-    if (!card) return;
+    if (!card) return
 
     // create a new array for the removal from prior location
-    let oldArrayCopy = [...gameState[card.location]]
+    const oldArrayCopy = [...gameState[card.location]]
     // splice the removed card at the correct index
-    oldArrayCopy.splice(oldArrayCopy.indexOf(card.id), 1);
+    oldArrayCopy.splice(oldArrayCopy.indexOf(card.id), 1)
 
     // create a new array for the addition to a new location
-    const newArrayCopy = card.location === nextLocation ? [...oldArrayCopy, card.id] : [...gameState[nextLocation], card.id];
+    const newArrayCopy = card.location === nextLocation ? [...oldArrayCopy, card.id] : [...gameState[nextLocation], card.id]
 
     // update the state of cards, prevLocation, nextLocation
     setGameState(
@@ -107,9 +107,9 @@ const Game = ({deck}) => {
   }
 
   const mapCardsByLocation = (location, className, randomOrder) => {
-    const cards = [...gameState[location]];
+    const cards = [...gameState[location]]
     
-    if(randomOrder) { shuffle(cards) };
+    if(randomOrder) { shuffle(cards) }
 
 
     return cards.map((cardId) =>
@@ -120,12 +120,12 @@ const Game = ({deck}) => {
   const reshuffleDiscard = () => {
     // create a new array for all of the cards in the deck
 
-    let newDeck = gameState.deck.concat(gameState.discard)
+    const newDeck = gameState.deck.concat(gameState.discard)
     console.log(newDeck)
 
-    shuffle(newDeck);
+    shuffle(newDeck)
 
-    setGameState({...gameState, deck: newDeck, discard: []});
+    setGameState({...gameState, deck: newDeck, discard: []})
   }
 
   return (
@@ -143,7 +143,7 @@ const Game = ({deck}) => {
           </Button>
           <Dialog open={showDiscard} onClose={() => setShowDiscard(false)} scroll="paper" maxWidth="lg" className="dialog-content" aria-labelledby="modal-title" aria-describedby="modal-description">
             <DialogContent>
-              {mapCardsByLocation(Location.DISCARD, "dialog", true)}
+              {mapCardsByLocation(Location.DISCARD, 'dialog', true)}
             </DialogContent>
           </Dialog>
         </div>
@@ -157,7 +157,7 @@ const Game = ({deck}) => {
           </Button>
           <Dialog open={showDeck} onClose={() => setShowDeck(false)} scroll="paper" maxWidth="lg" className="dialog-content" aria-labelledby="modal-title" aria-describedby="modal-description">
             <DialogContent>
-              {mapCardsByLocation(Location.DECK, "dialog", true)}
+              {mapCardsByLocation(Location.DECK, 'dialog', true)}
             </DialogContent>
           </Dialog>
         </div>  
@@ -166,7 +166,7 @@ const Game = ({deck}) => {
           {mapCardsByLocation(Location.HAND)}
         </div>
       </>
-  );
+  )
 }
 
-export default Game;
+export default Game

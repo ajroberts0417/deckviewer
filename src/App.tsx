@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import Game from './Game';
-import DeckSelection from './DeckSelection';
-import './App.css';
+import React, { useState } from 'react'
+import Game from './Game'
+import DeckSelection from './DeckSelection'
+import './App.css'
 import { Switch, Route } from 'react-router-dom'
 
-function App() {
-  const [deck, setDeck] = useState(null);
+const App: React.FC = () => {
+  const [deck, setDeck] = useState<number | null>(null)
 
   return (
     <div className="App">
@@ -21,4 +21,4 @@ function App() {
   )
 }
 
-export default App;
+export default App
