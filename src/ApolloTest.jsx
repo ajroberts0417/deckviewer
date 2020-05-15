@@ -1,26 +1,31 @@
-import React from 'react';
-import { useQuery, gql } from '@apollo/client';
+import React from 'react'
+import { useQuery, gql } from '@apollo/client'
 
-const EXCHANGE_RATES = gql`
-  {
-    rates(currency: "USD") {
-      currency
-      rate
+const DEFAULT_DECKS = gql`
+  query {
+    defaultDecks {
+      cards {
+        name
+        cost
+      }
     }
   }
-`;
+`
 
-export default function ExchangeRates() {
-  const { loading, error, data } = useQuery(EXCHANGE_RATES);
+export default function DefaultDecks() {
+  const { loading, error, data } = useQuery(DEFAULT_DECKS)
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error :(</p>
 
-  return data.rates.map(({ currency, rate }) => (
-    <div key={currency}>
+  return data.defaultDecks.map(({id, cards}) => (
+    <div key={id}>
       <p>
-        {currency}: {rate}
+       Deck: {id}
       </p>
+      <div>
+        {cards.map(({id, name, cost}) => (<div key={id}>{name} : {cost}</div>))}
+      </div>
     </div>
-  ));
+  ))
 }
