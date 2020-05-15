@@ -6,8 +6,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 
 const App: React.FC = () => {
   const [deck, setDeck] = useState<number | null>(null)
-
-  if (!deck) return <DeckSelection setDeck={setDeck} />
+  if (!deck) return <div className="App"><DeckSelection setDeck={setDeck} /></div>
   return (
     <div className="App">
       <Switch>
