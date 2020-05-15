@@ -41,9 +41,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "deckviewer.decks",
     "graphene_django",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -95,6 +98,18 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+]
+
+# CORS & CSRF
+# https://pypi.org/project/django-cors-headers/
+CORS_ORIGIN_WHITELIST = [
+    "https://sadcp.xyz",
+    "http://localhost:8888",
+    "http://localhost:3000",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'sadcp.xyz',
 ]
 
 

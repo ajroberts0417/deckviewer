@@ -13,6 +13,7 @@ django = "*"
 graphene-django = "*"
 black = "*"
 airtable-python-wrapper = "*"
+django-cors-headers = "*"
 
 [requires]
 python_version = "3.7"
