@@ -73,7 +73,7 @@ const Game = ({deck}) => {
       cards.forEach((card) => {
         cardsTable[card.fields.id] = {...card.fields, location: Location.DECK}  // create a dictionary of cards
         initialDeck.push(card.fields.id)
-      }) 
+      })
 
       shuffle(initialDeck)
 

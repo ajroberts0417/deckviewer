@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Game from './Game'
 import DeckSelection from './DeckSelection'
+import DeckBuilder from './deckbuilder/DeckBuilder'
 import './App.css'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
@@ -14,7 +15,7 @@ const App: React.FC = () => {
           <Redirect to="/game" />
         </Route>
         <Route exact path="/deckbuilder">
-          <DeckSelection setDeck={setDeck} />
+          <DeckBuilder deck={deck} />
         </Route>
         <Route exact path="/game">
           <Game deck={deck} />
