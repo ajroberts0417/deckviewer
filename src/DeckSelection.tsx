@@ -24,7 +24,7 @@ const decks = {
 }
 
 interface DeckSelectionProps {
-  setDeck: {(deck: number): void};
+  setDeck: (deck: number) => void;
 }
 
 const DeckSelection: React.FC<DeckSelectionProps> = ({setDeck}) => {
