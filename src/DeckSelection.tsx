@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles({
   button: {
@@ -29,25 +28,19 @@ interface DeckSelectionProps {
 
 const DeckSelection: React.FC<DeckSelectionProps> = ({setDeck}) => {
   const classes = useStyles()
-  const history = useHistory()
-
-  const setDeckAndRoute = (deck: number): void => {
-    setDeck(deck)
-    history.push('/game')
-  }
 
   return (
     <div className="deck-choice">
-      <Button classes={{ root: classes.button }} size="small" color="primary" onClick={(): void => setDeckAndRoute(decks.FIGHTER)}>
+      <Button classes={{ root: classes.button }} size="small" color="primary" onClick={(): void => setDeck(decks.FIGHTER)}>
         Fighter
       </Button>
-      <Button classes={{ root: classes.button }} size="small" color="primary" onClick={(): void => setDeckAndRoute(decks.WIZARD)}>
+      <Button classes={{ root: classes.button }} size="small" color="primary" onClick={(): void => setDeck(decks.WIZARD)}>
         Wizard
       </Button>
-      <Button classes={{ root: classes.button }} size="small" color="primary" onClick={(): void => setDeckAndRoute(decks.RANGER)}>
+      <Button classes={{ root: classes.button }} size="small" color="primary" onClick={(): void => setDeck(decks.RANGER)}>
         Ranger
       </Button>
-      <Button classes={{ root: classes.button }} size="small" color="primary" onClick={(): void => setDeckAndRoute(decks.CLERIC)}>
+      <Button classes={{ root: classes.button }} size="small" color="primary" onClick={(): void => setDeck(decks.CLERIC)}>
         Cleric
       </Button>
     </div>
