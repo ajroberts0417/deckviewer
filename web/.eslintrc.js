@@ -24,6 +24,10 @@ module.exports = {
         "semi": ["error", "never"],
         "quotes": [2, "single"],
         "react/prop-types": 'off',
+        "no-unused-expressions": "off",
+        "@typescript-eslint/no-unused-expression": ["error"],
+        "camelcase": "off",
+        "@typescript-eslint/camelcase": "off",
     },
     settings: {
         react: {

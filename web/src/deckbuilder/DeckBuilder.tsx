@@ -1,9 +1,10 @@
 import React from 'react'
 import DeckList from './DeckList'
 import { Card } from '@material-ui/core'
+import { DefaultDecks_defaultDecks } from '../__generated__/DefaultDecks'
 
 interface Props {
-    deck: number;
+    deck: DefaultDecks_defaultDecks;
 }
 
 interface Card {

@@ -5,9 +5,11 @@ import DeckBuilder from './deckbuilder/DeckBuilder'
 import DefaultDecks from './ApolloTest'
 import './App.css'
 import { Switch, Route, Redirect } from 'react-router-dom'
+import {DefaultDecks_defaultDecks} from './__generated__/DefaultDecks'
 
 const App: React.FC = () => {
-  const [deck, setDeck] = useState<number | null>(null)
+  const [deck, setDeck] = useState<DefaultDecks_defaultDecks | null>(null)
+
   if (!deck) return <div className="App"><DeckSelection setDeck={setDeck} /></div>
   return (
     <div className="App">

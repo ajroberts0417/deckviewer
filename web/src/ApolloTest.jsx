@@ -1,16 +1,7 @@
 import React from 'react'
-import { useQuery, gql } from '@apollo/client'
+import { useQuery } from '@apollo/client'
+import {DEFAULT_DECKS} from './gqlQueries'
 
-const DEFAULT_DECKS = gql`
-  query {
-    defaultDecks {
-      cards {
-        name
-        cost
-      }
-    }
-  }
-`
 
 export default function DefaultDecks() {
   const { loading, error, data } = useQuery(DEFAULT_DECKS)
