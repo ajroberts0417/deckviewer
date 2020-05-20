@@ -10,7 +10,6 @@
   publish = "./app/build"
 
   command = "yarn build"
-  functions = "functions" #  netlify-lambda reads this
 
 [build.environment]
   GQL_ENDPOINT = "localhost:8000/graphql"

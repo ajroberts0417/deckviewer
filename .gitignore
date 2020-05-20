@@ -12,6 +12,8 @@ __pycache__
 
 # production
 /build
+build/
+build/*
 db.sqlite3
 
 # misc
