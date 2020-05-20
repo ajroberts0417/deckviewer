@@ -9,7 +9,8 @@ import { BrowserRouter } from 'react-router-dom'
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
-    uri: 'http://localhost:8000/graphql',
+    // eslint-disable-next-line no-undef
+    uri: process.env.NODE_ENV == 'production' ? 'deckviewer.herokuapp.com/graphql' : 'http://localhost:8000/graphql',
   })
 })
 
