@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { Button, Dialog, DialogContent } from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
-import { useHistory } from 'react-router-dom'
 
 import Deck from './Deck'
 import Card from './Card'
@@ -36,49 +35,34 @@ const useStyles = makeStyles({
 })
 
 const Game = ({deck}) => {
-  const history = useHistory()
-  if (!deck) history.push('/')
 
   const classes = useStyles()
+
   const initialGameState = {
-    hand: [],  // array of cards
-    deck: [],  // array of cards
-    discard: [],  // array of cards
-    exile: [],  // array of cards
-    battlefield: [],  // array of cards
-    cards: {},
+    hand: [],  // all decks are just arrays of card ids
+    deck: [],
+    discard: [],
+    exile: [],
+    battlefield: [],
+    cards: {},  // a dictionary of all the cards in this game
   }
 
   const [gameState, setGameState] = useState(initialGameState)
   const [showDeck, setShowDeck] = useState(false)
   const [showDiscard, setShowDiscard] = useState(false)
 
-  // set the initial game state -- where the deck has all the cards
   useEffect(() => {
-    const getCards = async () => {
-      const url = `/.netlify/functions/airtable-list/airtable-list?deck=${deck}`
-      try {
-          const response = await fetch(url)
-          const data = await response.json()
-          return data
-      } catch (err) {
-          console.log(err)
-      }
-    }
+    const cardsTable = {}
+    const initialDeck = []
 
-    getCards().then((cards) => {
-      const cardsTable = {}
-      const initialDeck = []
-
-      cards.forEach((card) => {
-        cardsTable[card.fields.id] = {...card.fields, location: Location.DECK}  // create a dictionary of cards
-        initialDeck.push(card.fields.id)
-      })
-
-      shuffle(initialDeck)
-
-      setGameState({...gameState, deck: initialDeck, cards: cardsTable})  // initialize
+    deck.cards.forEach((card) => {
+      cardsTable[card.id] = {...card, location: Location.DECK}  // create a dictionary of cards
+      initialDeck.push(card.id)
     })
+
+    shuffle(initialDeck)
+
+    setGameState({...gameState, deck: initialDeck, cards: cardsTable})  // initialize
   }, [])
 
   const setCardLocation = (cardId, nextLocation) => {
@@ -107,24 +91,19 @@ const Game = ({deck}) => {
   }
 
   const mapCardsByLocation = (location, className, randomOrder) => {
-    const cards = [...gameState[location]]
+    const deck = [...gameState[location]]
     
-    if(randomOrder) { shuffle(cards) }
+    if(randomOrder) { shuffle(deck) }
 
-
-    return cards.map((cardId) =>
+    return deck.map((cardId) =>
       <Card key={cardId} setCardLocation={setCardLocation} cardInfo={gameState.cards[cardId]} className={className || location}/>
     )
   }
 
   const reshuffleDiscard = () => {
     // create a new array for all of the cards in the deck
-
     const newDeck = gameState.deck.concat(gameState.discard)
-    console.log(newDeck)
-
     shuffle(newDeck)
-
     setGameState({...gameState, deck: newDeck, discard: []})
   }
 
@@ -151,7 +130,7 @@ const Game = ({deck}) => {
           <p className="label">
             Deck:
           </p>
-          <Deck setCardLocation={setCardLocation} cards={gameState.deck} onClick={() => setShowDeck(true)}/>
+          <Deck setCardLocation={setCardLocation} size={gameState.deck.length} onClick={() => setShowDeck(true)}/>
           <Button classes={{root: classes.button}} size="small" color="primary" onClick={() => setCardLocation(gameState.deck[0], Location.HAND)}>
               Draw
           </Button>

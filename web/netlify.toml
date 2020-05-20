@@ -12,5 +12,11 @@
   command = "yarn build"
   functions = "functions" #  netlify-lambda reads this
 
+[build.environment]
+  GQL_ENDPOINT = "localhost:8000/graphql"
+
+[context.production.environment]
+  GQL_ENDPOINT = "deckviewer.herokuapp.com/graphql"
+
 [dev]
   publish = "./public"

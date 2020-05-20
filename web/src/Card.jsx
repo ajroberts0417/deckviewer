@@ -1,12 +1,12 @@
-import React from 'react';
+import React from 'react'
 
-import {Location} from './Game';
+import {Location} from './Game'
 
-import MuiCard from '@material-ui/core/Card';
-import {Typography, CardContent, Button} from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles';
+import MuiCard from '@material-ui/core/Card'
+import {Typography, Button} from '@material-ui/core'
+import {makeStyles} from '@material-ui/core/styles'
 
-import './Game.css';
+import './Game.css'
 
 const useStyles = makeStyles({
   root: {
@@ -21,36 +21,21 @@ const useStyles = makeStyles({
   label: {
     textTransform: 'capitalize',
   },
-});
+})
 
 const Card = ({cardInfo, className, setCardLocation, children}) => {
+  const classes = useStyles()
 
-let id = null;
-let name = null;
-let cost = null;
-let rulesText = null;
-let classType = null;
-let range = null;
-let cardType = null;
-let attackType = null;
+  const id = cardInfo?.id
+  const name = cardInfo?.name
+  const cost = cardInfo?.cost
+  const rulesText = cardInfo?.rulesText
+  const classType = cardInfo?.classType
+  const range = cardInfo?.range
+  const cardType = cardInfo?.cardType
 
-if (cardInfo) {
-  id = cardInfo["id"];
-  name = cardInfo["cardName"];
-  cost = cardInfo["cardCost"];
-  rulesText = cardInfo["rulesText"];
-  classType = cardInfo["cardClass"];
-  range = cardInfo["cardRange"];
-  cardType = cardInfo["cardType"];
-  attackType = cardInfo["attackType"];
-}
-
-const classes = useStyles();
-
-
-  // setCardLocation(cardInfo.id, 'deck');
   return (
-      <MuiCard className={"card "+className}>
+      <MuiCard className={'card '+className}>
         <div className="card-header">
           <Typography variant="subtitle2">
             {name}
@@ -85,7 +70,7 @@ const classes = useStyles();
         </Typography>
         {children}
       </MuiCard>
-  );
+  )
 }
 
-export default Card;
+export default Card

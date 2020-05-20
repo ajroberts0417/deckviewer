@@ -1,14 +1,14 @@
-import React from 'react';
+import React from 'react'
 
-import './Game.css';
+import './Game.css'
 
-const Deck = ({cards, onClick}) => {
+const Deck = ({size, onClick}) => {
 
   return (
     <div href="#" className="card back deck" onClick={onClick}>
-      {cards.length}
+      {size}
     </div>
-  );
+  )
 }
 
-export default Deck;
+export default Deck
