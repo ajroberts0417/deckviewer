@@ -34,7 +34,7 @@ const DeckSelection: React.FC<DeckSelectionProps> = ({setDeck}) => {
   return (
     <div className="deck-choice">
       {data?.defaultDecks?.map((deck) =>
-      <Button classes={{ root: classes.button }} size="small" color="primary" onClick={(): void => {if(deck) setDeck(deck)}}>
+        <Button classes={{ root: classes.button }} size="small" color="primary" onClick={(): void => {if(deck) setDeck(deck)}}>
           {deck?.name}
         </Button>
       )}
