@@ -10,7 +10,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
     // eslint-disable-next-line no-undef
-    uri: process.env.NODE_ENV == 'production' ? 'deckviewer.herokuapp.com/graphql' : 'http://localhost:8000/graphql',
+    uri: process.env.NODE_ENV == 'production' ? 'https://deckviewer.herokuapp.com/graphql' : 'http://localhost:8000/graphql',
   })
 })
 
