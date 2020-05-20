@@ -113,6 +113,10 @@ CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
 ]
 
+CORS_ORIGIN_REGEX_WHITELIST = [
+    r'^https?://.*\.optimistic-shockley-bf4462\.netlify\.app$',
+]
+
 CSRF_TRUSTED_ORIGINS = [
     'sadcp.xyz',
 ]
