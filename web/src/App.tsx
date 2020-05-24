@@ -9,7 +9,7 @@ import {DefaultDecks_defaultDecks} from './__generated__/DefaultDecks'
 
 const App: React.FC = () => {
   const [deck, setDeck] = useState<DefaultDecks_defaultDecks | null>(null)
-
+  // TODO: Navbar https://material-ui.com/components/drawers/
   if (!deck) return <div className="App"><DeckSelection setDeck={setDeck} /></div>
   return (
     <div className="App">
