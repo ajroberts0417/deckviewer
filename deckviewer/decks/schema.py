@@ -64,7 +64,7 @@ class CreatePlayerMutation(graphene.Mutation):
     player = graphene.Field(PlayerType)
 
     @staticmethod
-    def mutate(parent: 'CreatePlayerMutation', info, user_id, starter_deck_id):
+    def mutate(parent: "CreatePlayerMutation", info, user_id, starter_deck_id):
         player = Player.objects.create(user=user_id)
         starter_deck = Deck.objects.get(pk=starter_deck_id)
         starter_deckcards = DeckCard.objects.filter(deck=starter_deck)
@@ -91,7 +91,7 @@ class DeckMutation(graphene.Mutation):
     deck = graphene.Field(DeckType)
 
     @staticmethod
-    def mutate(parent: 'DeckMutation', info, **kwargs):
+    def mutate(parent: "DeckMutation", info, **kwargs):
         deck = Deck.objects.get(pk=id)
         name = kwargs.get("name")
         deck.name = name
@@ -107,7 +107,7 @@ class CreateDeckCardMutation(graphene.Mutation):
     deck_card = graphene.Field(DeckCardType)
 
     @staticmethod
-    def mutate(parent: 'CreateDeckCardMutation', info, deck_id, card_id):
+    def mutate(parent: "CreateDeckCardMutation", info, deck_id, card_id):
         deck_card = DeckCard.objects.create(deck=deck_id, card=card_id)
         return DeckMutation(deck_card=deck_card)
 
@@ -119,7 +119,7 @@ class DeleteDeckCardMutation(graphene.Mutation):
     ok = graphene.Boolean()
 
     @staticmethod
-    def mutate(parent: 'DeleteDeckCardMutation', info, deckcard_id):
+    def mutate(parent: "DeleteDeckCardMutation", info, deckcard_id):
         DeckCard.objects.get(pk=deckcard_id).delete()
         return DeckMutation(ok=True)
 

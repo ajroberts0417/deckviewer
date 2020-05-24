@@ -4,16 +4,17 @@ from deckviewer.decks.models import Deck, Card, DeckCard, Player, PlayerCard
 
 class DeckCardInline(admin.TabularInline):  # pragma: no cover just config
     """Define an inline to edit the DeckCards belonging to the deck."""
+
     model = DeckCard
 
-    autocomplete_fields = ['card']
+    autocomplete_fields = ["card"]
 
 
 @admin.register(Card)
 class CardAdmin(admin.ModelAdmin):  # pragma: no cover just config
     """Custom definition for Card Admin."""
 
-    search_fields = ['name']
+    search_fields = ["name"]
     inlines = [DeckCardInline]
 
 

@@ -7,17 +7,17 @@ from django.contrib.auth import get_user_model
 class Card(models.Model):
 
     CLASS_CHOICES = [
-        ('neutral', 'Neutral'),
-        ('wizard', 'Wizard'),
-        ('fighter', 'Fighter'),
-        ('ranger', 'Ranger'),
-        ('cleric', 'Cleric'),
+        ("neutral", "Neutral"),
+        ("wizard", "Wizard"),
+        ("fighter", "Fighter"),
+        ("ranger", "Ranger"),
+        ("cleric", "Cleric"),
     ]
 
     TYPE_CHOICES = [
-        ('permanent', 'Permanent'),
-        ('reaction', 'Reaction'),
-        ('action', 'Action'),
+        ("permanent", "Permanent"),
+        ("reaction", "Reaction"),
+        ("action", "Action"),
     ]
 
     airtable_id = models.CharField(max_length=100, blank=True, null=True)

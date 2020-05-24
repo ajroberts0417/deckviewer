@@ -24,10 +24,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', False)
+DEBUG = os.getenv("DEBUG", False)
 
 ALLOWED_HOSTS: List[str] = []
 
@@ -47,8 +47,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -82,13 +82,13 @@ WSGI_APPLICATION = "deckviewer.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('PGDBNAME'),
-        'USER': os.getenv('USER'),
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '5432',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("PGDBNAME"),
+        "USER": os.getenv("USER"),
+        "PASSWORD": "",
+        "HOST": "localhost",
+        "PORT": "5432",
     },
 }
 
@@ -114,11 +114,11 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 CORS_ORIGIN_REGEX_WHITELIST = [
-    r'^https?://.*\.optimistic-shockley-bf4462\.netlify\.app$',
+    r"^https?://.*\.optimistic-shockley-bf4462\.netlify\.app$",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'sadcp.xyz',
+    "sadcp.xyz",
 ]
 
 

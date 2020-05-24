@@ -7,16 +7,34 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('decks', '0003_auto_20200504_0053'),
+        ("decks", "0003_auto_20200504_0053"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='PlayerCard',
+            name="PlayerCard",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('card', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='decks.Card')),
-                ('player', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='decks.Player')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "card",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="decks.Card"
+                    ),
+                ),
+                (
+                    "player",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="decks.Player"
+                    ),
+                ),
             ],
         ),
     ]
