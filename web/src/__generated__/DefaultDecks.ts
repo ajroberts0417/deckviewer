@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { CardCardType } from "./globalTypes";
+import { CardCardType, CardClassType } from "./../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL query operation: DefaultDecks
@@ -12,12 +12,12 @@ import { CardCardType } from "./globalTypes";
 export interface DefaultDecks_defaultDecks_cards {
   __typename: "CardType";
   id: string;
-  name: string | null;
+  name: string;
   cardType: CardCardType;
-  classType: string | null;
-  cost: number | null;
-  range: string | null;
-  rulesText: string | null;
+  classType: CardClassType;
+  cost: number;
+  range: string;
+  rulesText: string;
 }
 
 export interface DefaultDecks_defaultDecks {
