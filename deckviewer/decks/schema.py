@@ -52,7 +52,7 @@ class Query(object):
 
     @staticmethod
     def resolve_player(parent: None, info, **kwargs):
-        return info.context.user.get('player')
+        return info.context.user.get("player")
 
     @staticmethod
     def resolve_starter_decks(parent: None, info, **kwargs):
