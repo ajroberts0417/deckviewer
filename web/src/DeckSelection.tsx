@@ -3,7 +3,7 @@ import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import {useQuery} from '@apollo/client'
 
-import { DEFAULT_DECKS } from './gqlQueries'
+import { DEFAULT_DECKS, PLAYER_DECKS } from './gqlQueries'
 import { DefaultDecks, DefaultDecks_defaultDecks } from './__generated__/DefaultDecks'
 
 const useStyles = makeStyles({
@@ -20,16 +20,21 @@ const useStyles = makeStyles({
 })
 
 interface DeckSelectionProps {
+  useDemo?: boolean;
   setDeck: (deck: DefaultDecks_defaultDecks) => void;
 }
 
-const DeckSelection: React.FC<DeckSelectionProps> = ({setDeck}) => {
+const DeckSelection: React.FC<DeckSelectionProps> = ({setDeck, useDemo = false}) => {
   const classes = useStyles()
 
-  const { loading, error, data } = useQuery<DefaultDecks>(DEFAULT_DECKS)
+  const deckQuery = useDemo ? DEFAULT_DECKS : PLAYER_DECKS
+
+  const { loading, error, data } = useQuery<DefaultDecks>(deckQuery)
   
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error :(</p>
+
+  const decks = useDemo ? data?.defaultDecks : data?.player?.decks
 
   return (
     <div className="deck-choice">

@@ -15,5 +15,23 @@ export const DEFAULT_DECKS = gql`
         rulesText
       }
     }
-  }
-`
+  }`
+
+export const PLAYER_DECKS = gql`
+  query PlayerDecks{
+    player{
+      decks {
+        id
+        name
+        cards {
+          id
+          name
+          cardType
+          classType
+          cost
+          range
+          rulesText
+        }
+      }
+    }
+  }`
