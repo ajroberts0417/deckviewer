@@ -31,16 +31,32 @@ class PlayerType(DjangoObjectType):
     class Meta:
         model = Player
 
+    cards = graphene.List(CardType)
+    decks = graphene.List(DeckType)
+
+    def resolve_cards(parent: Player, info, **kwargs):
+        playercards = PlayerCard.objects.select_related("card").filter(player=parent)
+        cards = [playercard.card for playercard in playercards]
+        return cards
+
+    def resolve_player_decks(parent: Player, info, **kwargs):
+        return Deck.objects.filter(player=parent)
+
 
 class Query(object):
-    player_decks = graphene.List(DeckType)
+    player = graphene.Field(PlayerType)
+    starter_decks = graphene.List(DeckType)
     default_decks = graphene.List(DeckType)
     all_cards = graphene.List(CardType)
     all_deckcards = graphene.List(DeckCardType)
 
     @staticmethod
-    def resolve_player_decks(parent: None, info, **kwargs):
-        return Deck.objects.filter(player__user=info.context.user)
+    def resolve_player(parent: None, info, **kwargs):
+        return info.context.user.get('player')
+
+    @staticmethod
+    def resolve_starter_decks(parent: None, info, **kwargs):
+        return Deck.objects.filter(name__contains="Starter")
 
     @staticmethod
     def resolve_default_decks(parent: None, info, **kwargs):
