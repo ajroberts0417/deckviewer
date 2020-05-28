@@ -11,6 +11,7 @@ class Query(DecksQuery, graphene.ObjectType):
     @login_required
     def resolve_test_authentication(parent, info, **kwargs):
         return "You are authenticated"
+
     pass
 
 
