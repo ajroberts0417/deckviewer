@@ -1,22 +1,15 @@
 import React from 'react'
 import DeckList from './DeckList'
 import { Card } from '@material-ui/core'
-import { DefaultDecks_defaultDecks } from '../__generated__/DefaultDecks'
+import { DefaultDecks_defaultDecks, DefaultDecks_defaultDecks_cards } from '../globalTypes'
 
 interface Props {
-    deck: DefaultDecks_defaultDecks;
-}
-
-interface Card {
-  id: number;
-  cardName: string;
+  deck: DefaultDecks_defaultDecks;
 }
 
 const DeckBuilder: React.FC<Props> = ({deck}) => {
 
-  const completeDeck = [{id: 1, cardName: 'foo'}, {id: 1, cardName: 'foo'}, {id: 2, cardName: 'bar'}, {id: 3, cardName: 'baz'}]
-
-  const reduceDeckToUniqueCards = (deck: Array<Card>): any => {
+  const reduceDeckToUniqueCards = (deck: Array<DefaultDecks_defaultDecks_cards>): any => {
     const uniqueCards: any = {}  // fix any types
     deck.forEach((card) => {
       const cardId = card.id
@@ -30,9 +23,11 @@ const DeckBuilder: React.FC<Props> = ({deck}) => {
     return uniqueCards
   }
 
-    return (
-      <DeckList deck={reduceDeckToUniqueCards(completeDeck)} />
-    )
+  const cards: any = deck?.cards || []  // any type to allow empty array
+
+  return (
+    <DeckList deck={reduceDeckToUniqueCards(cards)} />
+  )
 }
 
 export default DeckBuilder

@@ -4,7 +4,7 @@ import { Button } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { gql, useMutation } from '@apollo/client'
 
-import { TokenAuth } from './__generated__/TokenAuth'
+import { TokenAuth } from './globalTypes'
 
 const TOKEN_AUTH = gql`
   mutation TokenAuth($username: String!, $password: String!){
@@ -36,6 +36,7 @@ const Login: React.FC<Props> = ({setIsLoggedIn}) => {
 
   if(data){
     if(data.tokenAuth?.token){
+      localStorage.setItem('username', username)
       localStorage.setItem('token', data.tokenAuth.token)
     }
     setIsLoggedIn(true)

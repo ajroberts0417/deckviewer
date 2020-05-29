@@ -5,6 +5,11 @@ export const DEFAULT_DECKS = gql`
     defaultDecks {
       id
       name
+      player {
+        user {
+          username
+        }
+      }
       cards {
         id
         name
@@ -23,6 +28,11 @@ export const PLAYER_DECKS = gql`
       decks {
         id
         name
+        player {
+          user {
+            username
+          }
+        }
         cards {
           id
           name

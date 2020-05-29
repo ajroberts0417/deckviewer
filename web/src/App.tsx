@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import Game from './Game'
 import Login from './Login'
-import DeckSelection from './DeckSelection'
+import DeckSelection, {DemoDeckSelection} from './DeckSelection'
 import DeckBuilder from './deckbuilder/DeckBuilder'
 import DefaultDecks from './ApolloTest'
 import './App.css'
 import { Switch, Route, Redirect } from 'react-router-dom'
-import {DefaultDecks_defaultDecks} from './__generated__/DefaultDecks'
+import {DefaultDecks_defaultDecks} from './globalTypes'
 
 const App: React.FC = () => {
   // TODO: Navbar https://material-ui.com/components/drawers/
@@ -39,6 +39,9 @@ const App: React.FC = () => {
         </Route>
         <Route exact path="/apollo-test">
           <DefaultDecks />
+        </Route>
+        <Route exact path="/demo">
+          <DemoDeckSelection setDeck={setDeck} />
         </Route>
         <Route exact path="/logout">
           <Logout />

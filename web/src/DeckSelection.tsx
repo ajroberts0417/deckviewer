@@ -1,10 +1,11 @@
 import React from 'react'
 import { Button } from '@material-ui/core'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles } from '@material-ui/core/styles'
 import {useQuery} from '@apollo/client'
 
 import { DEFAULT_DECKS, PLAYER_DECKS } from './gqlQueries'
-import { DefaultDecks, DefaultDecks_defaultDecks } from './__generated__/DefaultDecks'
+import { DefaultDecks, DefaultDecks_defaultDecks, PlayerDecks } from './globalTypes'
 
 const useStyles = makeStyles({
   button: {
@@ -20,25 +21,41 @@ const useStyles = makeStyles({
 })
 
 interface DeckSelectionProps {
-  useDemo?: boolean;
   setDeck: (deck: DefaultDecks_defaultDecks) => void;
 }
 
-const DeckSelection: React.FC<DeckSelectionProps> = ({setDeck, useDemo = false}) => {
+const DeckSelection: React.FC<DeckSelectionProps> = ({setDeck}) => {
   const classes = useStyles()
 
-  const deckQuery = useDemo ? DEFAULT_DECKS : PLAYER_DECKS
-
-  const { loading, error, data } = useQuery<DefaultDecks>(deckQuery)
-  
-  if (loading) return <p>Loading...</p>
+  const { loading, error, data } = useQuery<PlayerDecks>(PLAYER_DECKS)
+  if (loading) return <CircularProgress />
   if (error) return <p>Error :(</p>
 
-  const decks = useDemo ? data?.defaultDecks : data?.player?.decks
+  const decks = data?.player?.decks
 
   return (
     <div className="deck-choice">
-      {data?.defaultDecks?.map((deck) =>
+      {decks?.map((deck) =>
+        <Button classes={{ root: classes.button }} size="small" color="primary" onClick={(): void => {if(deck) setDeck(deck)}}>
+          {deck?.name}
+        </Button>
+      )}
+    </div>
+  )
+}
+
+export const DemoDeckSelection: React.FC<DeckSelectionProps> = ({setDeck}) => {
+  const classes = useStyles()
+
+  const { loading, error, data } = useQuery<DefaultDecks>(DEFAULT_DECKS)
+  if (loading) return <CircularProgress />
+  if (error) return <p>Error :(</p>
+
+  const decks = data?.defaultDecks
+
+  return (
+    <div className="deck-choice">
+      {decks?.map((deck) =>
         <Button classes={{ root: classes.button }} size="small" color="primary" onClick={(): void => {if(deck) setDeck(deck)}}>
           {deck?.name}
         </Button>

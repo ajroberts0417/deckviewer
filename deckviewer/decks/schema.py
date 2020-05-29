@@ -1,8 +1,16 @@
 from deckviewer.decks.models import Card, Deck, DeckCard, Player, PlayerCard
+from django.contrib.auth import get_user_model
 
 import graphene
 
 from graphene_django.types import DjangoObjectType
+
+User = get_user_model()
+
+
+class UserType(DjangoObjectType):
+    class Meta:
+        model = User
 
 
 class CardType(DjangoObjectType):
@@ -33,6 +41,7 @@ class PlayerType(DjangoObjectType):
 
     cards = graphene.List(CardType)
     decks = graphene.List(DeckType)
+    user = graphene.Field(UserType)
 
     def resolve_cards(parent: Player, info, **kwargs):
         playercards = PlayerCard.objects.select_related("card").filter(player=parent)
@@ -41,6 +50,9 @@ class PlayerType(DjangoObjectType):
 
     def resolve_player_decks(parent: Player, info, **kwargs):
         return Deck.objects.filter(player=parent)
+    
+    def resolve_user(parent: Player, info, **kwargs):
+        return parent.user
 
 
 class Query(object):
@@ -52,7 +64,7 @@ class Query(object):
 
     @staticmethod
     def resolve_player(parent: None, info, **kwargs):
-        return info.context.user.get("player")
+        return getattr(info.context.user, "player", None)
 
     @staticmethod
     def resolve_starter_decks(parent: None, info, **kwargs):
