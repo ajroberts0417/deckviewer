@@ -55,9 +55,9 @@ const Game = ({deck}) => {
     const cardsTable = {}
     const initialDeck = []
 
-    deck.cards.forEach((card) => {
-      cardsTable[card.id] = {...card, location: Location.DECK}  // create a dictionary of cards
-      initialDeck.push(card.id)
+    deck.deckcards.forEach((deckcard) => {
+      cardsTable[deckcard.id] = {...deckcard.card, location: Location.DECK}  // create a dictionary of cards
+      initialDeck.push(deckcard.id)
     })
 
     shuffle(initialDeck)
@@ -74,10 +74,10 @@ const Game = ({deck}) => {
     // create a new array for the removal from prior location
     const oldArrayCopy = [...gameState[card.location]]
     // splice the removed card at the correct index
-    oldArrayCopy.splice(oldArrayCopy.indexOf(card.id), 1)
+    oldArrayCopy.splice(oldArrayCopy.indexOf(cardId), 1)
 
     // create a new array for the addition to a new location
-    const newArrayCopy = card.location === nextLocation ? [...oldArrayCopy, card.id] : [...gameState[nextLocation], card.id]
+    const newArrayCopy = card.location === nextLocation ? [...oldArrayCopy, cardId] : [...gameState[nextLocation], cardId]
 
     // update the state of cards, prevLocation, nextLocation
     setGameState(
@@ -96,7 +96,7 @@ const Game = ({deck}) => {
     if(randomOrder) { shuffle(deck) }
 
     return deck.map((cardId) =>
-      <Card key={cardId} setCardLocation={setCardLocation} cardInfo={gameState.cards[cardId]} className={className || location}/>
+      <Card key={cardId} setCardLocation={setCardLocation} cardInfo={{...gameState.cards[cardId], id: cardId}} className={className || location}/>
     )
   }
 
@@ -104,7 +104,12 @@ const Game = ({deck}) => {
     // create a new array for all of the cards in the deck
     const newDeck = gameState.deck.concat(gameState.discard)
     shuffle(newDeck)
-    setGameState({...gameState, deck: newDeck, discard: []})
+
+    const newCardsTable = {...gameState.cards}
+
+    // set the location of all discard cards to deck
+    gameState.discard.forEach((cardId) => {newCardsTable[cardId].location = Location.DECK})
+    setGameState({...gameState, cards: newCardsTable, deck: newDeck, discard: []})
   }
 
   return (
