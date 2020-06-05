@@ -2,10 +2,10 @@ import React from 'react'
 import { Button } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles } from '@material-ui/core/styles'
-import {useQuery} from '@apollo/client'
+import {useQuery, useMutation} from '@apollo/client'
 
-import { DEFAULT_DECKS, PLAYER_DECKS } from './gqlQueries'
-import { DefaultDecks, DefaultDecks_defaultDecks, PlayerDecks } from './globalTypes'
+import { DEFAULT_DECKS, PLAYER_DECKS, STARTER_DECKS, CREATE_PLAYER } from './gqlQueries'
+import { DefaultDecks, DefaultDecks_defaultDecks, PlayerDecks, StarterDecks, CreatePlayer } from './globalTypes'
 
 const useStyles = makeStyles({
   button: {
@@ -30,6 +30,8 @@ const DeckSelection: React.FC<DeckSelectionProps> = ({setDeck}) => {
   const { loading, error, data } = useQuery<PlayerDecks>(PLAYER_DECKS)
   if (loading) return <CircularProgress />
   if (error) return <p>Error :(</p>
+
+  if (data && !data.player) return <StarterDeckSelection setDeck={setDeck}/>
 
   const decks = data?.player?.decks
 
@@ -57,6 +59,31 @@ export const DemoDeckSelection: React.FC<DeckSelectionProps> = ({setDeck}) => {
     <div className="deck-choice">
       {decks?.map((deck) =>
         <Button classes={{ root: classes.button }} size="small" color="primary" onClick={(): void => {if(deck) setDeck(deck)}}>
+          {deck?.name}
+        </Button>
+      )}
+    </div>
+  )
+}
+
+export const StarterDeckSelection: React.FC<DeckSelectionProps> = ({setDeck}) => {
+  const classes = useStyles()
+
+  const { loading, error, data } = useQuery<StarterDecks>(STARTER_DECKS)
+  const [createPlayer, mutResult] = useMutation<CreatePlayer>(CREATE_PLAYER)
+  if (loading || mutResult.loading) return <CircularProgress />
+  if (error || mutResult.error) return <p>Error :(</p>
+
+  if (mutResult.data?.createPlayer?.deck) setDeck(mutResult.data.createPlayer.deck)
+
+  const decks = data?.starterDecks
+
+  return (
+    <div className="deck-choice">
+      <p className="deck-choice-title">Choose your starter class. (Choose wisely, this choice is permanent)</p>
+      <div className="break" />
+      {decks?.map((deck) =>
+        <Button classes={{ root: classes.button }} size="small" color="primary" onClick={(): void => {if(deck) createPlayer({ variables: { starterDeckId: deck.id } })}}>
           {deck?.name}
         </Button>
       )}

@@ -35,6 +35,37 @@ export interface DefaultDecks {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: StarterDecks
+// ====================================================
+
+export interface StarterDecks_starterDecks_cards {
+  __typename: "CardType";
+  id: string;
+  name: string;
+  cardType: CardCardType;
+  classType: CardClassType;
+  cost: number;
+  range: string;
+  rulesText: string;
+}
+
+export interface StarterDecks_starterDecks {
+  __typename: "DeckType";
+  id: string;
+  name: string;
+  cards: (StarterDecks_starterDecks_cards | null)[] | null;
+}
+
+export interface StarterDecks {
+  starterDecks: (StarterDecks_starterDecks | null)[] | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: PlayerDecks
 // ====================================================
 
@@ -63,6 +94,48 @@ export interface PlayerDecks_player {
 
 export interface PlayerDecks {
   player: PlayerDecks_player | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: CreatePlayer
+// ====================================================
+
+export interface CreatePlayer_createPlayer_deck_cards {
+  __typename: "CardType";
+  id: string;
+  name: string;
+  cardType: CardCardType;
+  classType: CardClassType;
+  cost: number;
+  range: string;
+  rulesText: string;
+}
+
+export interface CreatePlayer_createPlayer_deck {
+  __typename: "DeckType";
+  id: string;
+  name: string;
+  cards: (CreatePlayer_createPlayer_deck_cards | null)[] | null;
+}
+
+export interface CreatePlayer_createPlayer {
+  __typename: "CreatePlayerMutation";
+  ok: boolean | null;
+  deck: CreatePlayer_createPlayer_deck | null;
+}
+
+export interface CreatePlayer {
+  createPlayer: CreatePlayer_createPlayer | null;
+}
+
+export interface CreatePlayerVariables {
+  userId?: number | null;
+  starterDeckId: number;
 }
 
 /* tslint:disable */

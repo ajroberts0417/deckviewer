@@ -1,4 +1,5 @@
 from deckviewer.decks.models import Card, Deck, DeckCard, Player, PlayerCard
+
 from django.contrib.auth import get_user_model
 
 import graphene
@@ -27,30 +28,28 @@ class DeckType(DjangoObjectType):
     class Meta:
         model = Deck
 
-    cards = graphene.List(CardType)
+    deckcards = graphene.List(DeckCardType)
 
-    def resolve_cards(parent: Deck, info, **kwargs):
-        deckcards = DeckCard.objects.select_related("card").filter(deck=parent)
-        cards = [deckcard.card for deckcard in deckcards]
-        return cards
+    def resolve_deckcards(parent: Deck, info, **kwargs):
+        deckcards = DeckCard.objects.filter(deck=parent).select_related('card')
+        return deckcards
 
 
 class PlayerType(DjangoObjectType):
     class Meta:
         model = Player
 
-    cards = graphene.List(CardType)
+    playercards = graphene.List(CardType)
     decks = graphene.List(DeckType)
     user = graphene.Field(UserType)
 
-    def resolve_cards(parent: Player, info, **kwargs):
-        playercards = PlayerCard.objects.select_related("card").filter(player=parent)
-        cards = [playercard.card for playercard in playercards]
-        return cards
+    def resolve_playercards(parent: Player, info, **kwargs):
+        playercards = PlayerCard.objects.filter(player=parent)
+        return playercards
 
-    def resolve_player_decks(parent: Player, info, **kwargs):
+    def resolve_decks(parent: Player, info, **kwargs):
         return Deck.objects.filter(player=parent)
-    
+
     def resolve_user(parent: Player, info, **kwargs):
         return parent.user
 
@@ -86,29 +85,34 @@ class Query(object):
 
 class CreatePlayerMutation(graphene.Mutation):
     class Arguments:
-        user_id = graphene.Int(required=True)
         starter_deck_id = graphene.Int(required=True)
+        user_id = graphene.Int(required=False, default_value=None)
 
+    ok = graphene.Boolean()
     player = graphene.Field(PlayerType)
+    deck = graphene.Field(DeckType)
 
     @staticmethod
-    def mutate(parent: "CreatePlayerMutation", info, user_id, starter_deck_id):
-        player = Player.objects.create(user=user_id)
+    def mutate(parent: "CreatePlayerMutation", info, starter_deck_id, user_id=None):
+        user = info.context.user
+        if user_id and info.context.user.is_staff:
+            user = user_id
+        player = Player.objects.create(user=user)
         starter_deck = Deck.objects.get(pk=starter_deck_id)
         starter_deckcards = DeckCard.objects.filter(deck=starter_deck)
 
         player_cards = [
             PlayerCard(player=player, card=dc.card) for dc in starter_deckcards
         ]
-        PlayerCard.bulk_create(player_cards)
+        PlayerCard.objects.bulk_create(player_cards)
 
         new_starter_deck = Deck.objects.create(name=starter_deck.name, player=player)
 
         new_starter_deckcards = [
             DeckCard(deck=new_starter_deck, card=dc.card) for dc in starter_deckcards
         ]
-        DeckCard.bulk_create(new_starter_deckcards)
-        return DeckMutation(player=player)
+        DeckCard.objects.bulk_create(new_starter_deckcards)
+        return CreatePlayerMutation(player=player, deck=new_starter_deck, ok=True)
 
 
 class DeckMutation(graphene.Mutation):
@@ -137,7 +141,7 @@ class CreateDeckCardMutation(graphene.Mutation):
     @staticmethod
     def mutate(parent: "CreateDeckCardMutation", info, deck_id, card_id):
         deck_card = DeckCard.objects.create(deck=deck_id, card=card_id)
-        return DeckMutation(deck_card=deck_card)
+        return CreateDeckCardMutation(deck_card=deck_card)
 
 
 class DeleteDeckCardMutation(graphene.Mutation):
@@ -149,10 +153,11 @@ class DeleteDeckCardMutation(graphene.Mutation):
     @staticmethod
     def mutate(parent: "DeleteDeckCardMutation", info, deckcard_id):
         DeckCard.objects.get(pk=deckcard_id).delete()
-        return DeckMutation(ok=True)
+        return DeleteDeckCardMutation(ok=True)
 
 
 class Mutation(graphene.ObjectType):
     update_deck = DeckMutation.Field()
+    create_player = CreatePlayerMutation.Field()
     create_deckcard = CreateDeckCardMutation.Field()
     delete_deckcard = DeleteDeckCardMutation.Field()
