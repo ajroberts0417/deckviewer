@@ -18,7 +18,7 @@ psycopg2 = "*"
 gunicorn = "*"
 django-heroku = "*"
 django-graphql-jwt = "*"
-pyjwt = "==1.7.1"
+pyjwt = "==2.4.0"
 
 [requires]
 python_version = "3.8"
